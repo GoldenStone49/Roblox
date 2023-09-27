@@ -1,0 +1,38 @@
+-- Place this script inside a part that acts as a button or trigger
+
+local button = script.Parent -- Reference to the button or trigger part
+local highlightColor = Color3.new(1, 0, 0) -- Red color (you can change this)
+
+-- Function to highlight a player
+local function highlightPlayer(player)
+    local character = player.Character
+    if character then
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.BrickColor = BrickColor.new(highlightColor)
+            end
+        end
+    end
+end
+
+-- Function to reset the player's color
+local function resetPlayerColor(player)
+    local character = player.Character
+    if character then
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.BrickColor = part.OriginalColor or part.BrickColor
+            end
+        end
+    end
+end
+
+-- Connect the button click event
+button.Touched:Connect(function(otherPart)
+    local character = game.Players:GetPlayerFromCharacter(otherPart.Parent)
+    if character then
+        highlightPlayer(character)
+        wait(5) -- Highlight for 5 seconds (you can change this)
+        resetPlayerColor(character)
+    end
+end)
